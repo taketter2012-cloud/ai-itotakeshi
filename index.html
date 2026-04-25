@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI いとうたけし</title>
+  <title>未開封パック 期待値判定システム</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -122,24 +122,232 @@
 
     .hidden { display: none; }
     .divider { height: 1px; background: linear-gradient(to right, transparent, #c8a000, transparent); margin: 0.75rem 0; }
+
+    .btn-psa {
+      width: 100%; padding: 10px;
+      background: transparent;
+      color: #c8200a;
+      border: 1px solid #c8200a;
+      border-radius: 4px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      margin-top: 0.5rem; letter-spacing: 0.08em;
+      transition: all 0.15s;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-psa:hover { background: rgba(200,32,10,0.12); }
+    .btn-psa:active { opacity: 0.8; transform: scale(0.99); }
+    .btn-psa:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .psa-status {
+      font-size: 11px; margin-top: 6px; padding: 6px 10px;
+      border-radius: 4px; text-align: center; letter-spacing: 0.04em;
+    }
+    .psa-status.loading { color: #c8a000; background: rgba(200,160,0,0.08); border: 1px solid rgba(200,160,0,0.2); }
+    .psa-status.success { color: #4aee4a; background: rgba(74,238,74,0.08); border: 1px solid rgba(74,238,74,0.2); }
+    .psa-status.error { color: #ff6644; background: rgba(255,68,44,0.08); border: 1px solid rgba(255,68,44,0.2); }
+
+    .psa-detail {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px;
+    }
+    .psa-chip {
+      background: #0a0a0a; border: 1px solid #2a2000; border-radius: 4px;
+      padding: 6px 8px; text-align: center;
+    }
+    .psa-chip-label { font-size: 9px; color: #666; margin-bottom: 2px; }
+    .psa-chip-val { font-size: 15px; font-weight: 700; color: #c8a000; }
+
+    .btn-cardova {
+      width: 100%; padding: 10px;
+      background: transparent;
+      color: #00b87a;
+      border: 1px solid #00b87a;
+      border-radius: 4px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      margin-top: 6px; letter-spacing: 0.08em;
+      transition: all 0.15s;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-cardova:hover { background: rgba(0,184,122,0.10); }
+    .btn-cardova:active { opacity: 0.8; transform: scale(0.99); }
+    .btn-cardova:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .cardova-status {
+      font-size: 11px; margin-top: 6px; padding: 6px 10px;
+      border-radius: 4px; text-align: center; letter-spacing: 0.04em;
+    }
+    .cardova-status.loading { color: #00b87a; background: rgba(0,184,122,0.08); border: 1px solid rgba(0,184,122,0.2); }
+    .cardova-status.success { color: #00b87a; background: rgba(0,184,122,0.08); border: 1px solid rgba(0,184,122,0.2); }
+    .cardova-status.empty { color: #888; background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.2); }
+    .cardova-status.error { color: #ff6644; background: rgba(255,68,44,0.08); border: 1px solid rgba(255,68,44,0.2); }
+
+    .cardova-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-top: 8px;
+    }
+    .cardova-grid-3 {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px;
+    }
+    .cardova-chip {
+      background: #0a0a0a; border: 1px solid #003a20; border-radius: 4px;
+      padding: 6px 8px; text-align: center;
+    }
+    .cardova-chip-label { font-size: 9px; color: #00804a; margin-bottom: 2px; }
+    .cardova-chip-val { font-size: 15px; font-weight: 700; color: #00d688; }
+    .cardova-chip-val.small { font-size: 13px; }
+
+    .btn-yahuoku {
+      width: 100%; padding: 10px;
+      background: transparent;
+      color: #a855f7;
+      border: 1px solid #a855f7;
+      border-radius: 4px;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      margin-top: 6px; letter-spacing: 0.08em;
+      transition: all 0.15s;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-yahuoku:hover { background: rgba(168,85,247,0.10); }
+    .btn-yahuoku:active { opacity: 0.8; transform: scale(0.99); }
+    .btn-yahuoku:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .yahuoku-status {
+      font-size: 11px; margin-top: 6px; padding: 6px 10px;
+      border-radius: 4px; text-align: center; letter-spacing: 0.04em;
+    }
+    .yahuoku-status.loading { color: #a855f7; background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.2); }
+    .yahuoku-status.success { color: #a855f7; background: rgba(168,85,247,0.08); border: 1px solid rgba(168,85,247,0.2); }
+    .yahuoku-status.empty { color: #888; background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.2); }
+    .yahuoku-status.error { color: #ff6644; background: rgba(255,68,44,0.08); border: 1px solid rgba(255,68,44,0.2); }
+
+    .yahuoku-chip {
+      background: #0a0a0a; border: 1px solid #2a0060; border-radius: 4px;
+      padding: 6px 8px; text-align: center;
+    }
+    .yahuoku-chip-label { font-size: 9px; color: #7c3aed; margin-bottom: 2px; }
+    .yahuoku-chip-val { font-size: 15px; font-weight: 700; color: #c084fc; }
+    .yahuoku-chip-val.small { font-size: 13px; }
+
+    .btn-all-psa {
+      width: 100%; padding: 13px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(180,0,0,0.22));
+      color: #fff;
+      border: 2px solid #d4af37;
+      border-radius: 4px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      margin-top: 6px; letter-spacing: 0.08em;
+      transition: all 0.15s;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      box-shadow: 0 0 10px rgba(212,175,55,0.18);
+    }
+    .btn-all-psa:hover { background: linear-gradient(135deg, rgba(212,175,55,0.38), rgba(180,0,0,0.32)); box-shadow: 0 0 16px rgba(212,175,55,0.32); }
+    .btn-all-psa:active { opacity: 0.8; transform: scale(0.99); }
+    .btn-all-psa:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .btn-all {
+      width: 100%; padding: 12px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(180,0,0,0.12));
+      color: #d4af37;
+      border: 1px solid #d4af37;
+      border-radius: 4px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      margin-top: 10px; letter-spacing: 0.1em;
+      transition: all 0.15s;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-all:hover { background: linear-gradient(135deg, rgba(212,175,55,0.28), rgba(180,0,0,0.20)); }
+    .btn-all:active { opacity: 0.8; transform: scale(0.99); }
+    .btn-all:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .combined-status {
+      font-size: 12px; margin-top: 8px; padding: 10px 12px;
+      border-radius: 4px; text-align: center; letter-spacing: 0.04em;
+    }
+    .combined-status.loading { color: #d4af37; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.25); }
+    .combined-status.success { color: #d4af37; background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.35); }
+    .combined-status.empty   { color: #888; background: rgba(128,128,128,0.08); border: 1px solid rgba(128,128,128,0.2); }
+    .combined-status.error   { color: #ff6644; background: rgba(255,68,44,0.08); border: 1px solid rgba(255,68,44,0.2); }
+
+    .combined-chip {
+      background: #0a0a0a; border: 1px solid #5c4200; border-radius: 4px;
+      padding: 6px 8px; text-align: center;
+    }
+    .combined-chip-label { font-size: 9px; color: #9a7c1a; margin-bottom: 2px; }
+    .combined-chip-val { font-size: 15px; font-weight: 700; color: #d4af37; }
+    .combined-chip-val.small { font-size: 13px; }
+
+    .days-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; margin-top: 4px; }
+    .days-row label { font-size: 11px; color: #888; white-space: nowrap; }
+    .days-select {
+      background: #0a0a0a; border: 1px solid #2a2000; border-radius: 4px;
+      padding: 5px 8px; font-size: 12px; color: #f0e6c8; outline: none;
+      cursor: pointer; transition: border 0.15s;
+    }
+    .days-select:focus { border-color: #c8a000; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>AI いとうたけし</h1>
-  <p>PSA 期待値判定システム</p>
+  <h1>未開封パック 期待値判定システム</h1>
+  <p>PSA グレーディング EV 計算ツール</p>
 </header>
 
 <div class="container">
 
   <div class="tab-row">
-    <div class="tab active" onclick="switchTab('pp4')">PP4 ブラマジガール</div>
+    <div class="tab active" onclick="switchTab('pikachu')">マックピカ</div>
+    <div class="tab" onclick="switchTab('ukiyoe')">浮世絵青眼</div>
     <div class="tab" onclick="switchTab('kaiba')">海馬セット</div>
-    <div class="tab" onclick="switchTab('ukiyoe')">浮世絵ブルーアイズ</div>
+    <div class="tab" onclick="switchTab('pp4')">PP4ガール</div>
   </div>
 
-  <div id="tab-pp4">
+  <div id="tab-pikachu">
+    <div class="card">
+      <div class="card-title">仕入れ条件</div>
+      <div class="input-grid">
+        <div class="input-group"><label>仕入れ単価（円）</label><input type="number" id="pikachu_cost" value="3000"></div>
+        <div class="input-group"><label>鑑定料（円）</label><input type="number" id="pikachu_fee" value="4980"></div>
+        <div class="input-group"><label>提出率（%）</label><input type="number" id="pikachu_submit" value="100"></div>
+        <div class="input-group"><label>販売手数料（%）</label><input type="number" id="pikachu_commission" value="10"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">相場 &amp; PSA取得率</div>
+      <div class="input-grid">
+        <div class="input-group"><label>PSA10 売値（円）</label><input type="number" id="pikachu_p10" value="15000"></div>
+        <div class="input-group"><label>PSA9 売値（円）</label><input type="number" id="pikachu_p9" value="3000"></div>
+        <div class="input-group"><label>提出後 PSA10率（%）</label><input type="number" id="pikachu_r10" value="50"></div>
+        <div class="input-group"><label>提出後 PSA9率（%）</label><input type="number" id="pikachu_r9" value="35"></div>
+      </div>
+      <div class="days-row">
+        <label>過去平均期間</label>
+        <select id="pikachu_days" class="days-select">
+          <option value="30" selected>30日</option>
+          <option value="60">60日</option>
+          <option value="90">90日</option>
+          <option value="180">180日</option>
+          <option value="360">360日</option>
+        </select>
+      </div>
+      <button class="btn-all-psa" id="btn-all-psa-pikachu" onclick="fetchAllWithPSA('pikachu')">🏆 全相場取得＋PSAポップ取得</button>
+      <button class="btn-all" id="btn-all-pikachu" onclick="fetchAll('pikachu')">📊 全相場取得</button>
+      <div id="combined-status-pikachu" class="combined-status" style="display:none"></div>
+      <button class="btn-psa" id="btn-psa-pikachu" onclick="fetchPSA('pikachu')">🔴 PSAポップ取得</button>
+      <div id="psa-status-pikachu"></div>
+      <button class="btn-cardova" id="btn-cardova-pikachu" onclick="fetchCardova('pikachu')">🟢 カルドバ相場取得</button>
+      <div id="cardova-status-pikachu" class="cardova-status" style="display:none"></div>
+      <button class="btn-yahuoku" id="btn-yahuoku-pikachu" onclick="fetchYahuoku('pikachu')">🟣 ヤフオク相場取得</button>
+      <div id="yahuoku-status-pikachu" class="yahuoku-status" style="display:none"></div>
+    </div>
+    <button class="btn" onclick="calc('pikachu')">判定する</button>
+    <div id="pikachu_result" class="result-area hidden"></div>
+  </div>
+
+  <div id="tab-pp4" class="hidden">
     <div class="card">
       <div class="card-title">仕入れ条件</div>
       <div class="input-grid">
@@ -157,6 +365,25 @@
         <div class="input-group"><label>提出後 PSA10率（%）</label><input type="number" id="pp4_r10" value="30"></div>
         <div class="input-group"><label>提出後 PSA9率（%）</label><input type="number" id="pp4_r9" value="55"></div>
       </div>
+      <div class="days-row">
+        <label>過去平均期間</label>
+        <select id="pp4_days" class="days-select">
+          <option value="30">30日</option>
+          <option value="60">60日</option>
+          <option value="90">90日</option>
+          <option value="180" selected>180日</option>
+          <option value="360">360日</option>
+        </select>
+      </div>
+      <button class="btn-all-psa" id="btn-all-psa-pp4" onclick="fetchAllWithPSA('pp4')">🏆 全相場取得＋PSAポップ取得</button>
+      <button class="btn-all" id="btn-all-pp4" onclick="fetchAll('pp4')">📊 全相場取得</button>
+      <div id="combined-status-pp4" class="combined-status" style="display:none"></div>
+      <button class="btn-psa" id="btn-psa-pp4" onclick="fetchPSA('pp4')">🔴 PSAポップ取得</button>
+      <div id="psa-status-pp4"></div>
+      <button class="btn-cardova" id="btn-cardova-pp4" onclick="fetchCardova('pp4')">🟢 カルドバ相場取得</button>
+      <div id="cardova-status-pp4" class="cardova-status" style="display:none"></div>
+      <button class="btn-yahuoku" id="btn-yahuoku-pp4" onclick="fetchYahuoku('pp4')">🟣 ヤフオク相場取得</button>
+      <div id="yahuoku-status-pp4" class="yahuoku-status" style="display:none"></div>
     </div>
     <button class="btn" onclick="calc('pp4')">判定する</button>
     <div id="pp4_result" class="result-area hidden"></div>
@@ -179,6 +406,25 @@
         <div class="input-group"><label>PSA10率（%）</label><input type="number" id="kaiba_r10" value="80"></div>
         <div class="input-group"><label>PSA9率（%）</label><input type="number" id="kaiba_r9" value="15"></div>
       </div>
+      <div class="days-row">
+        <label>過去平均期間</label>
+        <select id="kaiba_days" class="days-select">
+          <option value="30">30日</option>
+          <option value="60">60日</option>
+          <option value="90" selected>90日</option>
+          <option value="180">180日</option>
+          <option value="360">360日</option>
+        </select>
+      </div>
+      <button class="btn-all-psa" id="btn-all-psa-kaiba" onclick="fetchAllWithPSA('kaiba')">🏆 全相場取得＋PSAポップ取得</button>
+      <button class="btn-all" id="btn-all-kaiba" onclick="fetchAll('kaiba')">📊 全相場取得</button>
+      <div id="combined-status-kaiba" class="combined-status" style="display:none"></div>
+      <button class="btn-psa" id="btn-psa-kaiba" onclick="fetchPSA('kaiba')">🔴 PSAポップ取得</button>
+      <div id="psa-status-kaiba"></div>
+      <button class="btn-cardova" id="btn-cardova-kaiba" onclick="fetchCardova('kaiba')">🟢 カルドバ相場取得</button>
+      <div id="cardova-status-kaiba" class="cardova-status" style="display:none"></div>
+      <button class="btn-yahuoku" id="btn-yahuoku-kaiba" onclick="fetchYahuoku('kaiba')">🟣 ヤフオク相場取得</button>
+      <div id="yahuoku-status-kaiba" class="yahuoku-status" style="display:none"></div>
     </div>
     <button class="btn" onclick="calc('kaiba')">判定する</button>
     <div id="kaiba_result" class="result-area hidden"></div>
@@ -201,6 +447,25 @@
         <div class="input-group"><label>PSA10率（%）</label><input type="number" id="ukiyoe_r10" value="87"></div>
         <div class="input-group"><label>PSA9率（%）</label><input type="number" id="ukiyoe_r9" value="10"></div>
       </div>
+      <div class="days-row">
+        <label>過去平均期間</label>
+        <select id="ukiyoe_days" class="days-select">
+          <option value="30">30日</option>
+          <option value="60">60日</option>
+          <option value="90" selected>90日</option>
+          <option value="180">180日</option>
+          <option value="360">360日</option>
+        </select>
+      </div>
+      <button class="btn-all-psa" id="btn-all-psa-ukiyoe" onclick="fetchAllWithPSA('ukiyoe')">🏆 全相場取得＋PSAポップ取得</button>
+      <button class="btn-all" id="btn-all-ukiyoe" onclick="fetchAll('ukiyoe')">📊 全相場取得</button>
+      <div id="combined-status-ukiyoe" class="combined-status" style="display:none"></div>
+      <button class="btn-psa" id="btn-psa-ukiyoe" onclick="fetchPSA('ukiyoe')">🔴 PSAポップ取得</button>
+      <div id="psa-status-ukiyoe"></div>
+      <button class="btn-cardova" id="btn-cardova-ukiyoe" onclick="fetchCardova('ukiyoe')">🟢 カルドバ相場取得</button>
+      <div id="cardova-status-ukiyoe" class="cardova-status" style="display:none"></div>
+      <button class="btn-yahuoku" id="btn-yahuoku-ukiyoe" onclick="fetchYahuoku('ukiyoe')">🟣 ヤフオク相場取得</button>
+      <div id="yahuoku-status-ukiyoe" class="yahuoku-status" style="display:none"></div>
     </div>
     <button class="btn" onclick="calc('ukiyoe')">判定する</button>
     <div id="ukiyoe_result" class="result-area hidden"></div>
@@ -209,13 +474,421 @@
 </div>
 
 <script>
+let psaCache = null;
+
+function getDays(cardKey) {
+  const el = document.getElementById(cardKey + '_days');
+  return el ? parseInt(el.value) || 90 : 90;
+}
+
+async function fetchPSA(cardKey) {
+  const btn = document.getElementById('btn-psa-' + cardKey);
+  const statusEl = document.getElementById('psa-status-' + cardKey);
+  const MAX_RETRY = 3;
+  const RETRY_WAIT = 5;
+
+  btn.disabled = true;
+
+  async function attempt(tryNum) {
+    btn.textContent = tryNum === 1 ? '⏳ 取得中...' : `⏳ リトライ ${tryNum}/${MAX_RETRY}`;
+    statusEl.className = 'psa-status loading';
+    statusEl.innerHTML = tryNum === 1
+      ? 'PSAサーバーに接続中...'
+      : `リトライ中 (${tryNum}/${MAX_RETRY})... PSAサーバーに接続中`;
+
+    const res = await fetch('/api/psa');
+    if (!res.ok) throw new Error('サーバーエラー: ' + res.status);
+    const json = await res.json();
+    psaCache = json.results;
+
+    const data = json.results[cardKey];
+    const err = json.errors[cardKey];
+    if (!data) throw new Error(err || 'データ取得失敗');
+    return data;
+  }
+
+  async function countdown(sec, tryNum) {
+    for (let s = sec; s > 0; s--) {
+      statusEl.className = 'psa-status loading';
+      statusEl.innerHTML = `取得失敗 — ${s}秒後にリトライ (${tryNum}/${MAX_RETRY})`;
+      await new Promise(r => setTimeout(r, 1000));
+    }
+  }
+
+  let lastError = null;
+  for (let i = 1; i <= MAX_RETRY; i++) {
+    try {
+      const data = await attempt(i);
+      const { psa10, psa9, total, rate10, rate9 } = data;
+
+      if (rate10 !== null && rate10 > 0) {
+        const r10Input = document.getElementById(cardKey + '_r10');
+        if (r10Input) r10Input.value = rate10.toFixed(1);
+      }
+      if (rate9 !== null && rate9 > 0) {
+        const r9Input = document.getElementById(cardKey + '_r9');
+        if (r9Input) {
+          const r10Val = rate10 !== null ? rate10 : 0;
+          const r9Capped = Math.min(rate9, Math.max(0, 100 - r10Val));
+          r9Input.value = r9Capped.toFixed(1);
+        }
+      }
+
+      const sumOk = (rate10 || 0) + (rate9 || 0) <= 100;
+      const sumNote = !sumOk
+        ? `<div style="font-size:10px;color:#ff6644;margin-top:3px;">⚠ PSA10率＋PSA9率が100%超のためPSA9率を自動補正</div>`
+        : '';
+
+      const detail = (psa10 > 0 || psa9 > 0 || total > 0)
+        ? `<div class="psa-detail">
+            <div class="psa-chip"><div class="psa-chip-label">PSA 10</div><div class="psa-chip-val">${psa10.toLocaleString()}</div></div>
+            <div class="psa-chip"><div class="psa-chip-label">PSA 9</div><div class="psa-chip-val">${psa9.toLocaleString()}</div></div>
+            <div class="psa-chip"><div class="psa-chip-label">総数</div><div class="psa-chip-val">${total.toLocaleString()}</div></div>
+          </div>`
+        : '';
+
+      const r10Txt = rate10 !== null && rate10 > 0 ? `PSA10率: <strong>${rate10.toFixed(1)}%</strong>` : 'PSA10率 計算不可';
+      const r9Txt  = rate9  !== null && rate9  > 0 ? ` / PSA9率: <strong>${Math.min(rate9, Math.max(0, 100-(rate10||0))).toFixed(1)}%</strong>` : '';
+      const rateLabel = `${r10Txt}${r9Txt} を入力欄に反映しました`;
+
+      const retryNote = i > 1 ? `<small style="opacity:0.6"> (${i}回目で成功)</small>` : '';
+      statusEl.className = 'psa-status success';
+      statusEl.innerHTML = rateLabel + retryNote + sumNote + detail;
+      btn.disabled = false;
+      btn.textContent = '🔴 PSAポップ取得';
+      return;
+    } catch (e) {
+      lastError = e;
+      if (i < MAX_RETRY) {
+        await countdown(RETRY_WAIT, i + 1);
+      }
+    }
+  }
+
+  statusEl.className = 'psa-status error';
+  statusEl.innerHTML = `取得失敗 (${MAX_RETRY}回試行): ${lastError.message}<br><small>しばらく待ってから再度お試しください</small>`;
+  btn.disabled = false;
+  btn.textContent = '🔴 PSAポップ取得';
+}
+
+async function fetchYahuoku(cardKey) {
+  const btn = document.getElementById('btn-yahuoku-' + cardKey);
+  const statusEl = document.getElementById('yahuoku-status-' + cardKey);
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 取得中...';
+  statusEl.style.display = '';
+  statusEl.className = 'yahuoku-status loading';
+  statusEl.innerHTML = 'ヤフオクに接続中...';
+
+  try {
+    const res = await fetch(`/api/yahuoku?card=${cardKey}&days=${getDays(cardKey)}`);
+    if (!res.ok) throw new Error('サーバーエラー: ' + res.status);
+    const json = await res.json();
+
+    if (json.error) throw new Error(json.error);
+
+    if (json.empty) {
+      statusEl.className = 'yahuoku-status empty';
+      statusEl.innerHTML = 'ヤフオクに該当データなし';
+      return;
+    }
+
+    const { avg, max, min, median, count, removed, lastSaleDate, oldestDate, fleaCount, auctionCount } = json;
+
+    const p10Input = document.getElementById(cardKey + '_p10');
+    if (p10Input && avg > 0) p10Input.value = avg;
+
+    const removedNote = removed > 0 ? `<div style="font-size:10px;color:#666;margin-top:3px;">異常値 ${removed}件 除外済み（5,000円フロア＋±50%フィルター）</div>` : '';
+    const sourceNote = (fleaCount != null)
+      ? `<div style="font-size:10px;color:#666;margin-top:3px;">内訳: オークション${auctionCount}件 / フリマ${fleaCount}件（全て売却済み）</div>`
+      : '';
+    const dateNote = oldestDate
+      ? `<div style="font-size:10px;color:#888;margin-top:3px;">期間: ${oldestDate} 〜 ${lastSaleDate}</div>`
+      : '';
+
+    statusEl.className = 'yahuoku-status success';
+    statusEl.innerHTML = `
+      直近${getDays(cardKey)}日 PSA10 落札 <strong>${count}件</strong>
+      ${dateNote}
+      ${removedNote}
+      ${sourceNote}
+      <div class="cardova-grid-3" style="margin-top:6px;">
+        <div class="yahuoku-chip"><div class="yahuoku-chip-label">平均落札価格</div><div class="yahuoku-chip-val">${avg.toLocaleString()}円</div></div>
+        <div class="yahuoku-chip"><div class="yahuoku-chip-label">中央値</div><div class="yahuoku-chip-val small">${median.toLocaleString()}円</div></div>
+        <div class="yahuoku-chip"><div class="yahuoku-chip-label">最高 / 最低</div><div class="yahuoku-chip-val small">${max.toLocaleString()} / ${min.toLocaleString()}円</div></div>
+      </div>
+    `;
+  } catch (e) {
+    statusEl.className = 'yahuoku-status error';
+    statusEl.innerHTML = '取得失敗: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🟣 ヤフオク相場取得';
+  }
+}
+
+async function fetchCombined(cardKey) {
+  const btn = document.getElementById('btn-all-' + cardKey);
+  const statusEl = document.getElementById('combined-status-' + cardKey);
+
+  statusEl.style.display = '';
+  statusEl.className = 'combined-status loading';
+  statusEl.innerHTML = 'カルドバ＋ヤフオク合算データ取得中...';
+
+  try {
+    const res = await fetch(`/api/combined?card=${cardKey}&days=${getDays(cardKey)}`);
+    if (!res.ok) throw new Error('サーバーエラー: ' + res.status);
+    const json = await res.json();
+    if (json.error) throw new Error(json.error);
+
+    if (json.empty) {
+      statusEl.className = 'combined-status empty';
+      statusEl.innerHTML = '合算データなし';
+      return;
+    }
+
+    const { avg, max, min, median, totalCount, removed, cardovaCount, yahuokuCount } = json;
+
+    const p10Input = document.getElementById(cardKey + '_p10');
+    if (p10Input && avg > 0) p10Input.value = avg;
+
+    const removedNote = removed > 0
+      ? `<div style="font-size:10px;color:#9a7c1a;margin-top:3px;">異常値 ${removed}件 除外済み（5,000円フロア＋±50%フィルター）</div>`
+      : '';
+
+    statusEl.className = 'combined-status success';
+    statusEl.innerHTML = `
+      <div style="font-size:13px;font-weight:700;color:#d4af37;margin-bottom:6px;">
+        カルドバ${cardovaCount}件 ＋ ヤフオク${yahuokuCount}件 ＝ 合計${totalCount}件
+      </div>
+      ${removedNote}
+      <div class="cardova-grid-3" style="margin-top:6px;">
+        <div class="combined-chip"><div class="combined-chip-label">合算平均価格</div><div class="combined-chip-val">${avg.toLocaleString()}円</div></div>
+        <div class="combined-chip"><div class="combined-chip-label">中央値</div><div class="combined-chip-val small">${median.toLocaleString()}円</div></div>
+        <div class="combined-chip"><div class="combined-chip-label">最高 / 最低</div><div class="combined-chip-val small">${max.toLocaleString()} / ${min.toLocaleString()}円</div></div>
+      </div>
+    `;
+  } catch (e) {
+    statusEl.className = 'combined-status error';
+    statusEl.innerHTML = '取得失敗: ' + e.message;
+  }
+}
+
+async function fetchAll(cardKey) {
+  const btn = document.getElementById('btn-all-' + cardKey);
+  btn.disabled = true;
+  btn.textContent = '⏳ 全相場取得中...';
+  try {
+    await fetchCombined(cardKey);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📊 全相場取得';
+  }
+}
+
+async function fetchAllWithPSA(cardKey) {
+  const btn = document.getElementById('btn-all-psa-' + cardKey);
+  btn.disabled = true;
+  btn.textContent = '⏳ 全取得中...';
+  try {
+    await Promise.all([
+      fetchPSA(cardKey),
+      fetchCombined(cardKey),
+    ]);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🏆 全相場取得＋PSAポップ取得';
+  }
+}
+
+async function fetchCardova(cardKey) {
+  const btn = document.getElementById('btn-cardova-' + cardKey);
+  const statusEl = document.getElementById('cardova-status-' + cardKey);
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 取得中...';
+  statusEl.style.display = '';
+  statusEl.className = 'cardova-status loading';
+  statusEl.innerHTML = 'カルドバに接続中...';
+
+  try {
+    const res = await fetch(`/api/cardova?card=${cardKey}&days=${getDays(cardKey)}`);
+    if (!res.ok) throw new Error('サーバーエラー: ' + res.status);
+    const json = await res.json();
+
+    if (json.error) throw new Error(json.error);
+
+    if (json.empty) {
+      statusEl.className = 'cardova-status empty';
+      statusEl.innerHTML = 'カルドバに該当データなし';
+      return;
+    }
+
+    const { avg, max, min, median, count, removed, lastSaleDate } = json;
+
+    // Auto-fill PSA10 price input with average
+    const p10Input = document.getElementById(cardKey + '_p10');
+    if (p10Input && avg > 0) p10Input.value = avg;
+
+    const removedNote = removed > 0 ? `<div style="font-size:10px;color:#666;margin-top:4px;">異常値 ${removed}件 除外済み（5,000円フロア＋±50%フィルター）</div>` : '';
+
+    statusEl.className = 'cardova-status success';
+    statusEl.innerHTML = `
+      直近${getDays(cardKey)}日 PSA10 成約 <strong>${count}件</strong> ／ 最終: ${lastSaleDate}
+      ${removedNote}
+      <div class="cardova-grid-3">
+        <div class="cardova-chip"><div class="cardova-chip-label">平均落札価格</div><div class="cardova-chip-val">${avg.toLocaleString()}円</div></div>
+        <div class="cardova-chip"><div class="cardova-chip-label">中央値</div><div class="cardova-chip-val small">${median.toLocaleString()}円</div></div>
+        <div class="cardova-chip"><div class="cardova-chip-label">最高 / 最低</div><div class="cardova-chip-val small">${max.toLocaleString()} / ${min.toLocaleString()}円</div></div>
+      </div>
+    `;
+  } catch (e) {
+    statusEl.className = 'cardova-status error';
+    statusEl.innerHTML = '取得失敗: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🟢 カルドバ相場取得';
+  }
+}
+
 function switchTab(name) {
-  ['pp4','kaiba','ukiyoe'].forEach((t, i) => {
+  ['pikachu','ukiyoe','kaiba','pp4'].forEach((t, i) => {
     document.getElementById('tab-' + t).classList.add('hidden');
     document.querySelectorAll('.tab')[i].classList.remove('active');
   });
   document.getElementById('tab-' + name).classList.remove('hidden');
-  document.querySelectorAll('.tab')[['pp4','kaiba','ukiyoe'].indexOf(name)].classList.add('active');
+  document.querySelectorAll('.tab')[['pikachu','ukiyoe','kaiba','pp4'].indexOf(name)].classList.add('active');
+}
+
+async function fetchSearchPSA() {
+  const url = (document.getElementById('search_psa_url').value || '').trim();
+  const btn = document.getElementById('btn-search-psa');
+  const statusEl = document.getElementById('search-psa-status');
+
+  if (!url) {
+    statusEl.style.display = '';
+    statusEl.style.cssText = 'display:block;font-size:11px;padding:6px 10px;border-radius:4px;margin-bottom:8px;text-align:center;color:#ff6644;background:rgba(255,68,44,0.08);border:1px solid rgba(255,68,44,0.2);';
+    statusEl.innerHTML = 'PSA URLを入力してください';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 取得中...';
+  statusEl.style.cssText = 'display:block;font-size:11px;padding:6px 10px;border-radius:4px;margin-bottom:8px;text-align:center;color:#c8a000;background:rgba(200,160,0,0.08);border:1px solid rgba(200,160,0,0.25);';
+  statusEl.innerHTML = 'PSAサーバーに接続中... (30〜60秒かかります)';
+
+  try {
+    const res = await fetch('/api/psa-url?url=' + encodeURIComponent(url));
+    const json = await res.json();
+    if (json.error) throw new Error(json.error);
+
+    const { psa10, psa9, total, rate10 } = json;
+    const rate9 = total > 0 ? (psa9 / total * 100) : 0;
+
+    document.getElementById('search_r10').value = rate10 ? rate10.toFixed(1) : 0;
+    document.getElementById('search_r9').value = rate9.toFixed(1);
+
+    statusEl.style.cssText = 'display:block;font-size:11px;padding:6px 10px;border-radius:4px;margin-bottom:8px;text-align:center;color:#4ade80;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.2);';
+    statusEl.innerHTML = `✅ PSA10: <strong>${psa10.toLocaleString()}枚</strong> ／ PSA9: ${psa9.toLocaleString()}枚 ／ 総数: ${total.toLocaleString()}枚 → PSA10率: <strong>${rate10 ? rate10.toFixed(1) : 0}%</strong>（PSA9率: ${rate9.toFixed(1)}%）`;
+  } catch (e) {
+    statusEl.style.cssText = 'display:block;font-size:11px;padding:6px 10px;border-radius:4px;margin-bottom:8px;text-align:center;color:#ff6644;background:rgba(255,68,44,0.08);border:1px solid rgba(255,68,44,0.2);';
+    statusEl.innerHTML = '取得失敗: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔴 PSA取得';
+  }
+}
+
+function calcSearch() {
+  const cost = +document.getElementById('search_cost').value;
+  const fee = +document.getElementById('search_fee').value;
+  const commission = +document.getElementById('search_commission').value / 100;
+  const p10 = +document.getElementById('search_p10').value;
+  const p9 = +document.getElementById('search_p9').value;
+  const r10 = +document.getElementById('search_r10').value / 100;
+  const r9 = +document.getElementById('search_r9').value / 100;
+
+  if (!p10 && !p9) {
+    alert('PSA10 売値またはPSA9 売値を入力してください');
+    return;
+  }
+
+  const p10n = p10 * (1 - commission), p9n = p9 * (1 - commission);
+  const ev_return = r10 * p10n + r9 * p9n;
+  const total_cost = cost + fee;
+  const ev_profit = ev_return - total_cost;
+  const machine_rate = total_cost > 0 ? ev_return / total_cost * 100 : 0;
+  const break_even = p10n > 0 ? Math.max(0, (total_cost - r9 * p9n) / p10n * 100) : 999;
+  const buy_limit = ev_return - fee;
+  const reasons = [], tags = [];
+
+  if (machine_rate >= 100) { reasons.push('期待値プラス'); tags.push({type:'ok', label:'期待値プラス'}); }
+  else { reasons.push('期待値マイナス'); tags.push({type:'ng', label:'期待値マイナス'}); }
+  if (r10 * 100 >= break_even && break_even < 100) { reasons.push('PSA10率が損益分岐を超えている'); tags.push({type:'ok', label:'10率OK'}); }
+  else { reasons.push(`PSA10率が損益分岐(${break_even > 100 ? '超過' : break_even.toFixed(1) + '%'})を下回っている`); tags.push({type:'ng', label:'10率不足'}); }
+  if (p9 >= 5000) { reasons.push('PSA9も売れる構造'); tags.push({type:'ok', label:'PSA9有効'}); }
+  else tags.push({type:'warn', label:'PSA9確認'});
+  if (cost <= buy_limit) tags.push({type:'ok', label:'仕入れOK'}); else { reasons.push('仕入れ価格が高すぎる'); tags.push({type:'ng', label:'仕入れ高すぎ'}); }
+
+  renderResult('search', ev_profit, machine_rate, break_even, total_cost, buy_limit, r10 * 100, reasons, tags);
+}
+
+async function fetchSearchCombined() {
+  const keyword = (document.getElementById('search_keyword').value || '').trim();
+  const btn = document.getElementById('btn-search');
+  const resultEl = document.getElementById('search-result');
+
+  if (!keyword) {
+    resultEl.style.display = '';
+    resultEl.className = 'combined-status error';
+    resultEl.innerHTML = 'カード名を入力してください';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ 取得中...';
+  resultEl.style.display = '';
+  resultEl.className = 'combined-status loading';
+  resultEl.innerHTML = `「${keyword}」をカルドバ＋ヤフオクで検索中...`;
+
+  try {
+    const res = await fetch('/api/search?keyword=' + encodeURIComponent(keyword));
+    if (!res.ok) throw new Error('サーバーエラー: ' + res.status);
+    const json = await res.json();
+    if (json.error) throw new Error(json.error);
+
+    if (json.empty) {
+      resultEl.className = 'combined-status empty';
+      resultEl.innerHTML = `「${keyword}」の該当データなし（直近90日 PSA10）`;
+      return;
+    }
+
+    const { avg, max, min, totalCount, removed, cardovaCount, yahuokuCount } = json;
+    const removedNote = removed > 0
+      ? `<div style="font-size:10px;color:#9a7c1a;margin-top:3px;">異常値 ${removed}件 除外済み</div>`
+      : '';
+
+    resultEl.className = 'combined-status success';
+    resultEl.innerHTML = `
+      <div style="font-size:13px;font-weight:700;color:#d4af37;margin-bottom:6px;">
+        カルドバ${cardovaCount}件 ＋ ヤフオク${yahuokuCount}件 ＝ 合計${totalCount}件
+      </div>
+      <div style="font-size:11px;color:#aaa;margin-bottom:4px;">直近90日 PSA10 落札データ</div>
+      ${removedNote}
+      <div class="cardova-grid-3" style="margin-top:8px;">
+        <div class="combined-chip"><div class="combined-chip-label">合算平均価格</div><div class="combined-chip-val">${avg.toLocaleString()}円</div></div>
+        <div class="combined-chip"><div class="combined-chip-label">最高</div><div class="combined-chip-val small">${max.toLocaleString()}円</div></div>
+        <div class="combined-chip"><div class="combined-chip-label">最低</div><div class="combined-chip-val small">${min.toLocaleString()}円</div></div>
+      </div>
+    `;
+  } catch (e) {
+    resultEl.className = 'combined-status error';
+    resultEl.innerHTML = '取得失敗: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📊 相場取得（カルドバ＋ヤフオク）';
+  }
 }
 
 function renderResult(id, ev_profit, machine_rate, break_even, avg_cost, buy_limit, p10_rate, reasons, tags) {
@@ -324,6 +997,35 @@ function calc(type) {
     else tags.push({type:'warn', label:'PSA9確認'});
     if (cost <= buy_limit) tags.push({type:'ok', label:'仕入れOK'}); else { reasons.push('仕入れ高すぎ'); tags.push({type:'ng', label:'仕入れ高すぎ'}); }
     renderResult('ukiyoe', ev_profit, machine_rate, break_even, total_cost, buy_limit, r10 * 100, reasons, tags);
+  }
+  if (type === 'pikachu') {
+    const cost = +document.getElementById('pikachu_cost').value;
+    const fee = +document.getElementById('pikachu_fee').value;
+    const submit = +document.getElementById('pikachu_submit').value / 100;
+    const commission = +document.getElementById('pikachu_commission').value / 100;
+    const p10 = +document.getElementById('pikachu_p10').value;
+    const p9 = +document.getElementById('pikachu_p9').value;
+    const r10 = +document.getElementById('pikachu_r10').value / 100;
+    const r9 = +document.getElementById('pikachu_r9').value / 100;
+    const p10n = p10 * (1 - commission), p9n = p9 * (1 - commission);
+    const ev_submit = r10 * p10n + r9 * p9n - fee;
+    const ev_profit = submit * ev_submit - cost;
+    const avg_cost = cost + submit * fee;
+    const ev_return = submit * (r10 * p10n + r9 * p9n);
+    const machine_rate = avg_cost > 0 ? ev_return / avg_cost * 100 : 0;
+    const A = submit * p10n;
+    const B = submit * (r9 * p9n - fee) - cost;
+    const break_even = A > 0 ? Math.max(0, -B / A * 100) : 999;
+    const buy_limit = ev_return - submit * fee;
+    const reasons = [], tags = [];
+    if (machine_rate >= 100) { reasons.push('期待値プラス'); tags.push({type:'ok', label:'期待値プラス'}); }
+    else { reasons.push('期待値マイナス'); tags.push({type:'ng', label:'期待値マイナス'}); }
+    if (r10 * 100 >= break_even && break_even < 100) { reasons.push('PSA10率が損益分岐を超えている'); tags.push({type:'ok', label:'10率OK'}); }
+    else { reasons.push('PSA10率が損益分岐を下回っている'); tags.push({type:'ng', label:'10率不足'}); }
+    if (p9 >= 3000) { reasons.push('PSA9も売れる構造'); tags.push({type:'ok', label:'PSA9有効'}); }
+    else { reasons.push('PSA9が弱い — 10一本勝負'); tags.push({type:'warn', label:'PSA9弱い'}); }
+    if (cost <= buy_limit) tags.push({type:'ok', label:'仕入れOK'}); else { reasons.push('仕入れ価格が高すぎる'); tags.push({type:'ng', label:'仕入れ高すぎ'}); }
+    renderResult('pikachu', ev_profit, machine_rate, break_even, avg_cost, buy_limit, r10 * 100, reasons, tags);
   }
 }
 </script>
